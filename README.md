@@ -109,7 +109,7 @@ Before we dive into that, recall that in this example the point is to
 demonstrate how to load balance across a PostgreSQL cluster that consists of a
 primary server and one or more read-only standby servers. It is assumed that
 [PgBouncer](https://www.pgbouncer.org) is used to load balance across multiple
-standby servers: whilst the application could be written to support multiple 
+standby servers; whilst the application could be written to support multiple 
 read-only servers directly, it's easier to use PgBouncer as that allows us to
 reconfigure and resize the cluster as needed, with changes required to the 
 PgBouncer configuration only. In fact, it makes sense to route the read-write
@@ -118,7 +118,7 @@ to a new server in the event of a failover or switchover.
 
 We need to do three things to implement a database router:
 
-1) Define the database connections. both the *primary* and *standby* databases
+1) Define the database connections. Both the *primary* and *standby* databases
    will point to PgBouncer, with the *primary* being a pool over the primary
    server in the cluster, and the *standby* being a pool over all the standby
    servers in the cluster:
@@ -144,8 +144,14 @@ We need to do three things to implement a database router:
        }
     }   
    ```
+   
+   Note that I've left the definition for the *default* database empty. You
+   could just as easily make the primary connection *default*, however I prefer
+   to explicitly name all connections, if only because it forces me to specify
+   the connection name when running migrations as a safety/sanity check.
 
-1) Next, we create our router class. This implements four methods that we can
+
+2) Next, we create our router class. This implements four methods that we can
    add whatever logic we want to. These methods have access to the model, 
    objects or other information that will help us decide where to route any 
    given database operation:
@@ -170,7 +176,7 @@ We need to do three things to implement a database router:
            return db == 'primary'
    ```
    
-1) We need to register our router in the *settings* module for the project:
+3) We need to register our router in the *settings* module for the project:
     
    ```bash
    DATABASE_ROUTERS = ['website.db_router.DbRouter']
