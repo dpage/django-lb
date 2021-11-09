@@ -1,0 +1,19 @@
+{% extends "msgs/base.html" %}
+
+{% block content %}
+    <h1>Anonymous Message Server</h1>
+    {% if warning|length %}
+    <p><b>{{ warning }}</b></p>
+    {% endif %}
+    <hr />
+    <p><b>Previous message: </b>{{ text }}</p>
+    <p><b>Posted: </b>{{ time }}</p>
+    <hr />
+    <h2>Send your message</h2>
+    <form method="POST">
+    {% csrf_token %}
+    New message: <input type="text" name="msg"> <input type="submit">
+    </form>
+
+    <p>View the <a href="{% url 'archive' %}">message archive</a>.</p>
+{% endblock %}

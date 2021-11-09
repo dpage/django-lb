@@ -1,0 +1,27 @@
+{% extends "msgs/base.html" %}
+
+{% block content %}
+    <h1>Anonymous Message Server Archive</h1>
+    <p><b>Thank you for your message!</b> Here are all the past messages.</p>
+    <p>Return to the <a href="{% url 'index' %}">homepage</a>.</p>
+{% for msg in msgs %}
+    <hr />
+    <p><b>Message: </b>{{ msg.msg_text }}</p>
+    <p><b>Posted: </b>{{ msg.msg_time }}</p>
+{%  endfor %}
+    <hr />
+
+{% if msgs.has_previous %}
+    <a href="?page=1">&laquo; first</a>
+    <a href="?page={{ msgs.previous_page_number }}">previous</a>
+{% endif %}
+
+    Page {{ msgs.number }} of {{ msgs.paginator.num_pages }}
+
+{% if msgs.has_next %}
+    <a href="?page={{ msgs.next_page_number }}">next</a>
+    <a href="?page={{ msgs.paginator.num_pages }}">last &raquo;</a>
+{% endif %}
+
+    <p>Return to the <a href="{% url 'index' %}">homepage</a>.</p>
+{% endblock %}
