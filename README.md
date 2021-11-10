@@ -68,7 +68,7 @@ DATABASES = {
     },
     'accounts': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'accountsdb',
+        'NAME': 'orderdb',
         'USER': 'myuser',
         'PASSWORD': 'secret',
         'HOST': '192.168.155.76',
@@ -82,17 +82,17 @@ want to access anything except the default one. Typically this will involve
 using the *using* method of a model object:
 
 ```python
-Transaction.objects.using('accounts').all()
+Order.objects.using('orderdb').all()
 ```
 
-Would return all the *Transaction* records from the *accounts* database. In 
+Would return all the *Order* records from the *orderdb* database. In 
 other cases, the *using* keyword argument might be used:
 
 ```python
-transaction.save(using='accounts')
+order.save(using='orderdb')
 ```
 
-This will save a *transaction* object to the *accounts* database.
+This will save an *order* object to the *orderdb* database.
 
 However, this basic method of routing database queries can be tedious to 
 implement in large applications, and arguably lends itself more to application
